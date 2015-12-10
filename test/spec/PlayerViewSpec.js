@@ -32,7 +32,7 @@ describe('PlayerView', function() {
   });
 
   describe('Song transitions', function() {
-    xit('dequeues a song when finished playing & plays the next song', function(){
+    it('dequeues a song when finished playing & plays the next song', function(){
       var firstSong = library.at(0)
         , secondSong = library.at(1)
         , thirdSong = library.at(2)
@@ -50,6 +50,21 @@ describe('PlayerView', function() {
       // Simulate the end of the second song
       $(appView.playerView.el).trigger('ended');
       expect(appView.playerView.model).to.equal(thirdSong);
+    });
+
+    it('when dequeueing first song, plays the next song', function() {
+      sinon.spy(SongModel.prototype, 'play');
+      var firstSong = library.at(0),
+          secondSong = library.at(1)
+          songQueue = appView.model.get('songQueue');
+
+      songQueue.add(firstSong);
+      songQueue.add(secondSong);
+
+      firstSong.dequeue();
+      expect(appView.playerView.model).to.equal(secondSong);
+      expect(secondSong.play).to.have.been.called;
+      secondSong.play.restore();
     });
   });
 

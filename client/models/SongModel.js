@@ -10,7 +10,6 @@ var SongModel = Backbone.Model.extend({
     //appView.songQueueView must:
     //  - create or associate a SongQueueEntryView
     //  - render it
-    //  - add song to app.songQueue
 
     //app.songQueue must:
     //  - decide whether or not play
@@ -20,10 +19,12 @@ var SongModel = Backbone.Model.extend({
 
   dequeue: function() {
     this.trigger('dequeue', this);
+    console.log('dequeue!');
   },
 
   ended: function() {
     this.trigger('ended', this);
+    console.log('ended!');
   }
 
 });
