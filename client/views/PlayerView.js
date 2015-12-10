@@ -5,26 +5,28 @@ var PlayerView = Backbone.View.extend({
   // see: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_HTML5_audio_and_video
   el: '<audio controls autoplay />',
 
-  initialize: function() {
-    // var context = this;
-    // this.$el.on('ended', function() {
-    //   context.model.ended();
-    // });
-  },
-
-  setSong: function(song){
-    this.model = song;
-    this.render();
-
-  },
-
+  //when audio tag triggers 'ended', trigger ended on the current song
   events: {
     'ended': function() {
       this.model.ended();
     }
   },
 
+  // TODO: find out why events works this time
+  // initialize: function() {
+  //   var context = this;
+  //   this.$el.on('ended', function() {
+  //     context.model.ended();
+  //   });
+  // },
+
+  setSong: function(song){
+    this.model = song;
+    this.render();
+  },
+
   render: function(){
     return this.$el.attr('src', this.model ? this.model.get('url') : '');
   }
+
 });

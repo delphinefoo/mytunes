@@ -1,44 +1,46 @@
 // SongQueue.js - Defines a backbone model class for the song queue.
 var SongQueue = Songs.extend({
 
-
   initialize: function(){
-    this.on('add', function() {
+
+    this.on({
+      //play first song if adding to an empty queue
+      'add': function() {
+        if (this.length === 1) {
+          this.playFirst();
+        }
+      },
+
+      //if first song was removed, play new first song
+      'remove': function(song, collection, obj) {
+        if (obj.index === 0 && this.length > 0) {
+          this.playFirst();
+        }
+      },
+
+      //when a song ends, remove it from queue
+      'ended': function() {
+        this.remove(this.first());
+      },
+
+      //when a song is dequeued, remove it
+      'dequeue': function(song) {
+        this.remove(song);
+      }
+    }, this);
+  },
+
+  //play the first song
+  playFirst: function() {
+    this.first().play();
+  }
+
+  //TO DO: ask why this doesn't work
+  /*events: {
+    'add': function() {
       if (this.length === 1) {
         this.playFirst();
       }
-    }, this);
-
-    this.on('remove', function(song, collection, obj) {
-      if (obj.index === 0 && this.length > 0) {
-        this.playFirst();
-      }
-    }, this);
-
-    this.on('ended', function() {
-      this.remove(this.at(0));
-    }, this);
-
-    this.on('dequeue', function(song) {
-      var index = this.indexOf(song);
-      console.log(song);
-      this.remove(song);
-      //if removed the first song, call playFirst again
-      if (index === 0 && this.length) {
-        this.playFirst();
-      }
-    });
-  },
-
-  playFirst: function() {
-    this.at(0).play();
-  },
-
-  events: {
-    // 'add': function() {
-    //   if (this.length === 1) {
-    //     this.playFirst();
-    //   }
-  }
+  }*/
 
 });
