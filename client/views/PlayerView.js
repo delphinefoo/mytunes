@@ -12,14 +12,6 @@ var PlayerView = Backbone.View.extend({
     }
   },
 
-  // TODO: find out why events works this time
-  // initialize: function() {
-  //   var context = this;
-  //   this.$el.on('ended', function() {
-  //     context.model.ended();
-  //   });
-  // },
-
   setSong: function(song){
     this.model = song;
     this.render();

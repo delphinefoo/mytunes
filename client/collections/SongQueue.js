@@ -11,36 +11,34 @@ var SongQueue = Songs.extend({
         }
       },
 
-      //if first song was removed, play new first song
-      'remove': function(song, collection, obj) {
-        if (obj.index === 0 && this.length > 0) {
-          this.playFirst();
-        }
-      },
-
-      //when a song ends, remove it from queue
       'ended': function() {
-        this.remove(this.first());
+        this.playNext();
       },
 
-      //when a song is dequeued, remove it
+      //when a song is dequeued, play next if it was first, otherwise just remove it
       'dequeue': function(song) {
-        this.remove(song);
+        if (this.at(0) === song) {
+          this.playNext();
+        } else {
+          this.remove(song);
+        }
       }
     }, this);
+  },
+
+  //remove the first song, if there is another, play it, otherwise stop
+  playNext: function() {
+    this.shift();
+    if (this.length > 0) {
+      this.playFirst();
+    } else {
+      this.trigger('stop', this);
+    }
   },
 
   //play the first song
   playFirst: function() {
     this.first().play();
   }
-
-  //TO DO: ask why this doesn't work
-  /*events: {
-    'add': function() {
-      if (this.length === 1) {
-        this.playFirst();
-      }
-  }*/
 
 });

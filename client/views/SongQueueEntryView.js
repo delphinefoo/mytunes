@@ -9,21 +9,11 @@ var SongQueueEntryView = Backbone.View.extend({
     'click': function() {
       this.model.dequeue();
     }
-    // TODO: find why this doesn't work
-    // 'ended': function() {
-    //   console.log(this + ' triggers!')
-    //   this.remove();
-    // }
   },
 
   initialize: function() {
-    this.model.on({
-      'ended': function() {
-        this.remove();
-      },
-      'dequeue': function() {
-        this.remove();
-      }
+    this.model.on('dequeue ended', function() {
+      this.remove();
     }, this);
   },
 
